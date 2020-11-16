@@ -8,13 +8,11 @@
 #include <functional>
 #include <numeric>
 
-#define EPSILON 0.0001
-#define ROBUST_FAILURE_PROBABILITY 0.01
+#include "constants.h"
 
 class Distribution
 {
 protected:
-
 
 public:
     Distribution();

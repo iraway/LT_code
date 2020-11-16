@@ -5,14 +5,22 @@ project(LT-code LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-
-add_executable(LT-code
-    main.cpp
-    io.cpp
+set(HEADER
     io.h
-    distribution.cpp
     distribution.h
+    lt_code.h
+    packet.h
+    constants.h
+    packetfactory.h
     )
 
+set(SOURCE
+    main.cpp
+    io.cpp
+    distribution.cpp
+    lt_code.cpp
+    packet.cpp
+    packetfactory.cpp
+    )
 
-
+add_executable(LT-code ${SOURCE} ${HEADER})

@@ -4,6 +4,7 @@
 
 #include "io.h"
 #include "distribution.h"
+#include "packetfactory.h"
 
 void test(std::string file_in, std::string file_out);
 
@@ -28,8 +29,7 @@ void test(std::string file_in, std::string file_out){
     IO io(file_in, file_out);
     std::string source_data = io.readDataS();
 
-    Distribution dist;
-    std::vector<double> prob = dist.robust_distribution(25);
-    std::copy(prob.begin(), prob.end(), std::ostream_iterator<double>(std::cout, " \n"));
+    PacketFactory pf(source_data);
+
 
 }

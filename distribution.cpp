@@ -1,9 +1,6 @@
 #include "distribution.h"
 
-Distribution::Distribution()
-{
-
-}
+Distribution::Distribution(){}
 
 std::vector<double> Distribution::ideal_distribution(const size_t N){
     double probabilities_sum = 0.;
@@ -51,22 +48,7 @@ std::vector<double> Distribution::robust_distribution(const size_t N){
                                        decltype(probabilities)::value_type(0));
 
     assert(sum_of_probabilities >= 1. - EPSILON and sum_of_probabilities <= 1. + EPSILON and "The robust distribution should be standardized");
-/*
-    M = N // 2 + 1
-    R = N / M
-    extra_proba = [0] + [1 / (i * M) for i in range(1, M)]
-    extra_proba += [math.log(R / ROBUST_FAILURE_PROBABILITY) / M]  # Spike at M
-    extra_proba += [0 for k in range(M+1, N+1)]
-    probabilities = np.add(extra_proba, ideal_distribution(N))
-    probabilities /= np.sum(probabilities)
-    probabilities_sum = np.sum(probabilities)
-
-    assert probabilities_sum >= 1 - EPSILON and probabilities_sum <= 1 + EPSILON, "The robust distribution should be standardized"
-    return probabilities
-  */
-   return probabilities;
+    return probabilities;
 }
 
-Distribution::~Distribution(){
-
-}
+Distribution::~Distribution() {}
