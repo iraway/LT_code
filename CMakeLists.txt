@@ -12,6 +12,7 @@ set(HEADER
     packet.h
     constants.h
     packetfactory.h
+    utils.h
     )
 
 set(SOURCE
@@ -21,6 +22,7 @@ set(SOURCE
     lt_code.cpp
     packet.cpp
     packetfactory.cpp
+    utils.cpp
     )
 
 add_executable(LT-code ${SOURCE} ${HEADER})

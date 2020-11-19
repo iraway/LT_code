@@ -12,24 +12,22 @@
 class PacketFactory
 {
 private:
-
     Distribution dist;
-
+    std::default_random_engine generator;
 protected:
+    static size_t id;
 
     std::vector<Packet> packets;
 
-    void parse_data_to_packets(std::string &data);
     size_t gen_degree(const std::vector<double> &);
+    std::string padding(std::string &data);
 
 public:
-    static size_t id;
-
     PacketFactory();
     PacketFactory(std::string &data);
     PacketFactory(char *data);
 
-
+    std::vector<Packet> parse_data_to_packets(std::string &data);
 
     ~PacketFactory();
 };

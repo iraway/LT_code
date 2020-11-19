@@ -3,8 +3,9 @@
 #include <iterator>
 
 #include "io.h"
-#include "distribution.h"
-#include "packetfactory.h"
+#include "lt_code.h"
+#include "packet.h"
+
 
 void test(std::string file_in, std::string file_out);
 
@@ -29,7 +30,10 @@ void test(std::string file_in, std::string file_out){
     IO io(file_in, file_out);
     std::string source_data = io.readDataS();
 
-    PacketFactory pf(source_data);
+    LT_code lt;
+    std::vector<Packet> packets = lt.encode(source_data);
+    std::string decode_string = lt.decode(packets);
 
+    io.writeData(decode_string);
 
 }

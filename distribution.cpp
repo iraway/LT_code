@@ -48,7 +48,8 @@ std::vector<double> Distribution::robust_distribution(const size_t N){
                                        decltype(probabilities)::value_type(0));
 
     assert(sum_of_probabilities >= 1. - EPSILON and sum_of_probabilities <= 1. + EPSILON and "The robust distribution should be standardized");
-    return probabilities;
+    std::vector<double> result(&probabilities[1],&probabilities[probabilities.size()]);
+    return result;
 }
 
 Distribution::~Distribution() {}

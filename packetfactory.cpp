@@ -15,35 +15,42 @@ PacketFactory::PacketFactory(char *data){
 }
 
 size_t PacketFactory::gen_degree(const std::vector<double> &distrib){
-    srand(time(NULL));
-    int r = rand();
-    int last = 0;
-    for(size_t i = 0; i < distrib.size(); i++){
-        if(r > last && r < INT_MAX * distrib[i]){
-            return i + 1;
-        }
+    std::vector<double> intervals;
+    for(size_t i = 0; i < distrib.size() + 1; i++){
+        intervals.push_back((double)i + 1);
     }
-    return 1;
+    std::piecewise_constant_distribution<double>
+        distribution (intervals.begin(), intervals.end(), distrib.begin());
+    int n = distribution(generator);
+    return n;
 }
 
-void PacketFactory::parse_data_to_packets(std::string &data){
-    std::vector<double> distrib = dist.robust_distribution(data.length() / BYTE_IN_PACKET);
-    for(size_t i = 0; i < data.length() / BYTE_IN_PACKET; i += BYTE_IN_PACKET){
-        std::string substring = data.substr(i, i + BYTE_IN_PACKET);
-        size_t degree = gen_degree(distrib);
+std::string PacketFactory::padding(std::string &data){
+    if(data.length() % BYTE_IN_PACKET == 0){
+        return data;
+    }else{
+        size_t add = BYTE_IN_PACKET - data.length() % BYTE_IN_PACKET;
+        std::string dop;
+        dop.resize(add);
+        return data + dop;
+    }
+}
 
-        Packet packet(data, degree, id++);
+std::vector<Packet> PacketFactory::parse_data_to_packets(std::string &data){
+    data = this->padding(data);
+    std::vector<double> distrib = dist.robust_distribution(data.length() / BYTE_IN_PACKET);
+    std::string substring = data.substr(0, BYTE_IN_PACKET);
+    size_t degree = 1;
+    Packet packet(substring, degree, id++);
+    packets.push_back(packet);
+
+    for(size_t i = 1; i < data.length() / BYTE_IN_PACKET; i++ ){
+        substring = data.substr(i * BYTE_IN_PACKET, BYTE_IN_PACKET);
+        degree = gen_degree(distrib);
+        Packet packet(substring, degree, id++);
         packets.push_back(packet);
-        std::cout << substring << " " << degree << " " << id << std::endl;
     }
-    if(data.length() % BYTE_IN_PACKET != 0){
-        size_t start = data.length() / BYTE_IN_PACKET * BYTE_IN_PACKET;
-        std::string substring = data.substr(start, data.length() - 1);
-        size_t degree = gen_degree(distrib);
-        Packet packet(data, degree, id++);
-        packets.push_back(packet);
-        std::cout << substring << " " << degree << " " << id << std::endl;
-    }
+    return packets;
 }
 
 PacketFactory::~PacketFactory(){}
