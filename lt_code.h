@@ -12,6 +12,7 @@ class LT_code
 {
 protected:
     PacketFactory pf;
+    std::string deleteDuplicates(std::vector<Packet> &);
 
 public:
     LT_code();

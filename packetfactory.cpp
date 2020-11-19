@@ -38,17 +38,23 @@ std::string PacketFactory::padding(std::string &data){
 
 std::vector<Packet> PacketFactory::parse_data_to_packets(std::string &data){
     data = this->padding(data);
-    std::vector<double> distrib = dist.robust_distribution(data.length() / BYTE_IN_PACKET);
+    std::vector<double> distrib = dist.robust_distribution(data.length() / BYTE_IN_PACKET * REDUNDANCY);
     std::string substring = data.substr(0, BYTE_IN_PACKET);
     size_t degree = 1;
     Packet packet(substring, degree, id++);
     packets.push_back(packet);
-
-    for(size_t i = 1; i < data.length() / BYTE_IN_PACKET; i++ ){
-        substring = data.substr(i * BYTE_IN_PACKET, BYTE_IN_PACKET);
+    for(size_t i = 1; i < REDUNDANCY; i++){
         degree = gen_degree(distrib);
         Packet packet(substring, degree, id++);
         packets.push_back(packet);
+    }
+    for(size_t i = 1; i < data.length() / BYTE_IN_PACKET; i++ ){
+        substring = data.substr(i * BYTE_IN_PACKET, BYTE_IN_PACKET);
+        for(size_t j = 0; j < REDUNDANCY; j++){
+            degree = gen_degree(distrib);
+            Packet packet(substring, degree, id++);
+            packets.push_back(packet);
+        }
     }
     return packets;
 }
