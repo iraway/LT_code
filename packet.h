@@ -13,13 +13,15 @@ private:
 
 protected:
     size_t index;
+
+    size_t index_for_degree;
     size_t degree;
 
     std::string data;
 
 public:
-    Packet(char *data, const size_t degree, const size_t id);
-    Packet(std::string &data, const size_t degree, const size_t id);
+    Packet(char *data, const size_t index_for_degree, const size_t degree, const size_t id);
+    Packet(std::string &data, const size_t index_for_degree, const size_t degree, const size_t id);
 
     size_t get_index();
     size_t get_degree();

@@ -1,23 +1,24 @@
 #include "packet.h"
 
-Packet::Packet(char *data, const size_t degree, const size_t id) {
+Packet::Packet(char *data, const size_t index_for_degree, const size_t degree, const size_t id) {
     this->data = std::string(data);
     this->index = id;
     this->degree = degree;
-
+    this->index_for_degree = index_for_degree;
 }
 
-Packet::Packet(std::string &data, const size_t degree, const size_t id){
+Packet::Packet(std::string &data, const size_t index_for_degree, const size_t degree, const size_t id){
     this->data = data;
     this->index = id;
     this->degree = degree;
+    this->index_for_degree = index_for_degree;
 }
 
 std::vector<size_t> Packet::gen_neighbors(const size_t number_of_block){
     std::vector<size_t> neighboors;
 
     std::set<size_t> neigh_set;
-    srand (this->index);
+    srand (this->index_for_degree);
     neigh_set.insert(this->index);
     for(size_t i = 1; i < degree; i++){
         while(true){

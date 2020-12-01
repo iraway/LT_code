@@ -22,7 +22,7 @@ size_t PacketFactory::gen_degree(const std::vector<double> &distrib){
     std::piecewise_constant_distribution<double>
         distribution (intervals.begin(), intervals.end(), distrib.begin());
     int n = distribution(generator);
-    return n;
+    return n - 1;
 }
 
 std::string PacketFactory::padding(std::string &data){
@@ -39,20 +39,22 @@ std::string PacketFactory::padding(std::string &data){
 std::vector<Packet> PacketFactory::parse_data_to_packets(std::string &data){
     data = this->padding(data);
     std::vector<double> distrib = dist.robust_distribution(data.length() / BYTE_IN_PACKET * REDUNDANCY);
+    //std::vector<double> distrib = dist.ideal_distribution(data.length() / BYTE_IN_PACKET * REDUNDANCY);
     std::string substring = data.substr(0, BYTE_IN_PACKET);
     size_t degree = 1;
-    Packet packet(substring, degree, id++);
+    srand(time(NULL));
+    Packet packet(substring, rand(), degree, id++);
     packets.push_back(packet);
     for(size_t i = 1; i < REDUNDANCY; i++){
         degree = gen_degree(distrib);
-        Packet packet(substring, degree, id++);
+        Packet packet(substring, rand(), degree, id++);
         packets.push_back(packet);
     }
     for(size_t i = 1; i < data.length() / BYTE_IN_PACKET; i++ ){
         substring = data.substr(i * BYTE_IN_PACKET, BYTE_IN_PACKET);
         for(size_t j = 0; j < REDUNDANCY; j++){
             degree = gen_degree(distrib);
-            Packet packet(substring, degree, id++);
+            Packet packet(substring, rand(), degree, id++);
             packets.push_back(packet);
         }
     }
