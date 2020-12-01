@@ -11,5 +11,5 @@ Luby transform codes (LT codes) are the first class of practical fountain codes 
 $ cd LT_code
 $ cmake .
 $ cmake --build . --target all
-$ ./LT-code [file_in] [file_out]
+$ ./LT-code test test_out
 ```
